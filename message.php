@@ -1,12 +1,10 @@
 <?php
 include('db_connection.php');
 
-// Initialize variables
 $full_name = $email = $message = $id = '';
 $notification_state = '';
 $notification = '';
 
-//select single item
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
 
@@ -24,7 +22,6 @@ if (isset($_GET['edit'])) {
     }
 }
 
-// Update Operation
 if (isset($_POST['update'])) {
     $id = $_POST['id'];
     $full_name = $_POST['full_name'];
@@ -35,13 +32,13 @@ if (isset($_POST['update'])) {
     if ($conn->query($sql) === TRUE) {
         $notification_state = 'success';
         $notification = "Record updated successfully";
+        header("Location: message.php");
     } else {
         $notification_state = 'error';
         $notification = "Error: " . $sql . "<br>" . $conn->error;
     }
 }
 
-// Delete Operation
 if (isset($_GET['del'])) {
     $id = $_GET['del'];
     $sql = "DELETE FROM message WHERE id=$id";
@@ -54,7 +51,6 @@ if (isset($_GET['del'])) {
     }
 }
 
-// Read (Retrieve) all records
 $sql = "SELECT * FROM message";
 $messages = $conn->query($sql);
 ?>
@@ -72,28 +68,30 @@ $messages = $conn->query($sql);
 <div class="container mt-5">
     <h2 class="text-center mb-4">Messages</h2>
 
-    <form action="message.php" method="post">
-        <input type="hidden" name="id" value="<?php echo $id; ?>">
-        <div class="mb-3">
-            <label for="full_name" class="form-label">Full Name</label>
-            <input type="text" name="full_name" class="form-control" id="full_name" value="<?php echo $full_name; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" name="email" class="form-control" id="email" value="<?php echo $email; ?>" required>
-        </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea name="message" class="form-control" id="message" rows="5" required><?php echo $message; ?></textarea>
-        </div>
+    <?php if ($id): ?>
+        <form action="message.php" method="post">
+            <input type="hidden" name="id" value="<?php echo $id; ?>">
+            <div class="mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" name="full_name" class="form-control" id="full_name" value="<?php echo $full_name; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" name="email" class="form-control" id="email" value="<?php echo $email; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea name="message" class="form-control" id="message" rows="5" required><?php echo $message; ?></textarea>
+            </div>
 
-        <button type="submit" name="update" class="btn btn-success">Update</button>
-    </form>
+            <button type="submit" name="update" class="btn btn-success">Update</button>
+        </form>
+    <?php endif; ?>
 
-<hr>
+    <hr>
 
-<h3> List of Messages </h3>
-    <?php if ($notification_state !=''): ?>
+    <h3>List of Messages</h3>
+    <?php if ($notification_state != ''): ?>
         <div class="container mt-3">
             <?php if ($notification_state == 'success'): ?>
                 <div class="alert alert-success">
@@ -106,6 +104,7 @@ $messages = $conn->query($sql);
             <?php endif; ?>
         </div>
     <?php endif; ?>
+
     <table class="table table-bordered mt-4">
         <thead>
             <tr>
