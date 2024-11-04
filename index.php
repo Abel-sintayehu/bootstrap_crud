@@ -326,7 +326,8 @@
                             <textarea class="form-control" name="message" id="message" placeholder="Message"></textarea>
                         </div>
                         <div class="mt-3">
-                            <button type="submit" name="save" class="btn btn-primary">Send</button>
+                            <button type="submit" name="save" class="btn btn-primary">Save</button>
+                            <button type="submit" name="delete" class="btn btn-secondary">Delete</button>
                         </div>
                     </div>
                 </form>

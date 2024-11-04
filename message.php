@@ -45,6 +45,7 @@ if (isset($_GET['del'])) {
     if ($conn->query($sql) === TRUE) {
         $notification_state = 'success';
         $notification = "Record deleted successfully";
+        header("Location: message.php");
     } else {
         $notification_state = 'error';
         $notification = "Error deleting record: " . $conn->error;
